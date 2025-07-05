@@ -122,7 +122,9 @@ class FPVCaptionGenerator:
 
         headers = {
             "Authorization": f"Bearer {self.openrouter_api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://github.com/igorvaryvoda/fpv-caption-creator",
+            "X-Title": "FPV Caption Creator"
         }
 
         data = {
@@ -173,11 +175,13 @@ class FPVCaptionGenerator:
 
         headers = {
             "Authorization": f"Bearer {self.openrouter_api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://github.com/yourusername/fpv-caption-creator",
+            "X-Title": "FPV Caption Creator"
         }
 
         data = {
-            "model": "google/gemini-pro",
+            "model": "google/gemini-2.5-flash-lite-preview-06-17",
             "messages": [
                 {
                     "role": "user",
@@ -199,6 +203,16 @@ class FPVCaptionGenerator:
             hashtags = [tag.strip() for tag in hashtags_text.split() if tag.startswith('#')]
             return hashtags
 
+        except requests.exceptions.HTTPError as e:
+            if response.status_code == 400:
+                try:
+                    error_detail = response.json()
+                    st.warning(f"⚠️ API Error: {error_detail.get('error', {}).get('message', 'Bad request')}")
+                except:
+                    st.warning(f"⚠️ Could not generate hashtags: HTTP 400 - Check your API key and model availability")
+            else:
+                st.warning(f"⚠️ Could not generate hashtags: HTTP {response.status_code}")
+            return []
         except Exception as e:
             st.warning(f"⚠️ Could not generate hashtags: {str(e)}")
             return []

@@ -30,18 +30,27 @@ st.markdown("""
     }
 
     .platform-card {
-        background: #f0f2f6;
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-        border-left: 4px solid #4ecdc4;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 2rem;
+        border-radius: 16px;
+        margin: 1.5rem 0;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .platform-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     }
 
     .hashtag-section {
-        background: #e8f4f8;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-top: 1rem;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 1.5rem;
+        border: 1px solid #bae6fd;
+        box-shadow: 0 2px 10px rgba(14, 165, 233, 0.1);
     }
 
     .stButton > button {
@@ -58,6 +67,37 @@ st.markdown("""
     .stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .platform-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .caption-box {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .hashtag-box {
+        background: #fafafa;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        font-family: monospace;
+        font-size: 0.9rem;
+        color: #1e40af;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -179,7 +219,7 @@ class FPVCaptionGenerator:
         headers = {
             "Authorization": f"Bearer {self.openrouter_api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/yourusername/fpv-caption-creator",
+            "HTTP-Referer": "https://github.com/igorvaryvoda/fpv-caption-creator",
             "X-Title": "FPV Caption Creator"
         }
 
@@ -272,7 +312,15 @@ def main():
                 platform_key = platform.lower().replace(" ", "_")
 
                 st.markdown(f'<div class="platform-card">', unsafe_allow_html=True)
-                st.subheader(f"📱 {platform}")
+
+                # Platform-specific icons
+                platform_icons = {
+                    "Instagram": "📸",
+                    "TikTok": "🎵",
+                    "YouTube Shorts": "📺"
+                }
+
+                st.markdown(f'<div class="platform-header">{platform_icons.get(platform, "📱")} {platform}</div>', unsafe_allow_html=True)
 
                 # Generate caption
                 caption = generator.generate_caption(location, description, platform_key)
@@ -285,13 +333,13 @@ def main():
                         desc = parts[1].strip()
 
                         st.markdown("**📺 Title:**")
-                        st.code(title, language="text")
+                        st.markdown(f'<div class="caption-box">{title}</div>', unsafe_allow_html=True)
 
                         st.markdown("**📝 Description:**")
-                        st.code(desc, language="text")
+                        st.markdown(f'<div class="caption-box">{desc}</div>', unsafe_allow_html=True)
                     else:
                         st.markdown("**📝 Caption:**")
-                        st.code(caption, language="text")
+                        st.markdown(f'<div class="caption-box">{caption}</div>', unsafe_allow_html=True)
 
                     # Generate hashtags
                     hashtags = generator.generate_hashtags(location, description, platform_key)
@@ -300,7 +348,7 @@ def main():
                         st.markdown('<div class="hashtag-section">', unsafe_allow_html=True)
                         st.markdown("**#️⃣ Suggested Hashtags:**")
                         hashtag_text = " ".join(hashtags)
-                        st.code(hashtag_text, language="text")
+                        st.markdown(f'<div class="hashtag-box">{hashtag_text}</div>', unsafe_allow_html=True)
                         st.markdown('</div>', unsafe_allow_html=True)
 
                 st.markdown('</div>', unsafe_allow_html=True)

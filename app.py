@@ -231,8 +231,8 @@ class FPVCaptionGenerator:
                     "content": prompt
                 }
             ],
-            "max_tokens": 200,
-            "temperature": 0.6
+            "max_tokens": 800,
+            "temperature": 0.8
         }
 
         try:
@@ -287,13 +287,14 @@ def main():
         st.header("🤖 AI Model Selection")
         model_options = [
             "google/gemini-2.5-flash-lite-preview-06-17",
+            "meta-llama/llama-4-maverick",
+            "openai/gpt-4.1-mini",
             "google/gemini-2.5-flash",
             "google/gemini-2.0-flash-001",
             "deepseek/deepseek-r1-0528",
-            "openai/o4-mini",
             "anthropic/claude-sonnet-4",
             "openrouter/cypher-alpha:free",
-            "deepseek/deepseek-chat-v3-0324:free"
+            "deepseek/deepseek-chat-v3-0324:free",
         ]
 
         selected_model = st.selectbox(

@@ -75,49 +75,52 @@ class FPVCaptionGenerator:
 
         # Platform-specific prompts
         prompts = {
-            "instagram": f"""
-            Create an engaging Instagram caption for an FPV drone video with these details:
-            Location: {location}
-            Flight description: {description}
+                         "instagram": f"""
+             Create an engaging Instagram caption for an FPV drone video with these details:
+             Location: {location}
+             Flight description: {description}
 
-            Requirements:
-            - Keep it under 150 words
-            - Make it exciting and visually descriptive
-            - Include relevant emojis
-            - Focus on the experience and visuals
-            - End with a call to action
+             Requirements:
+             - Keep it under 150 words
+             - Make it exciting and visually descriptive
+             - Include relevant emojis
+             - Focus on the experience and visuals
+             - End with a call to action
+             - DO NOT include any hashtags in the caption text
 
-            Format: Just return the caption text, no extra formatting.
-            """,
+             Format: Just return the caption text, no hashtags, no extra formatting.
+             """,
 
-            "tiktok": f"""
-            Create a catchy TikTok caption for an FPV drone video with these details:
-            Location: {location}
-            Flight description: {description}
+                         "tiktok": f"""
+             Create a catchy TikTok caption for an FPV drone video with these details:
+             Location: {location}
+             Flight description: {description}
 
-            Requirements:
-            - Keep it short and punchy (under 100 words)
-            - Use trending language and emojis
-            - Make it shareable and engaging
-            - Include a hook at the beginning
+             Requirements:
+             - Keep it short and punchy (under 100 words)
+             - Use trending language and emojis
+             - Make it shareable and engaging
+             - Include a hook at the beginning
+             - DO NOT include any hashtags in the caption text
 
-            Format: Just return the caption text, no extra formatting.
-            """,
+             Format: Just return the caption text, no hashtags, no extra formatting.
+             """,
 
-            "youtube_shorts": f"""
-            Create both a title and description for a YouTube Shorts FPV drone video:
-            Location: {location}
-            Flight description: {description}
+                         "youtube_shorts": f"""
+             Create both a title and description for a YouTube Shorts FPV drone video:
+             Location: {location}
+             Flight description: {description}
 
-            Requirements:
-            - Title: Under 60 characters, clickable and SEO-friendly
-            - Description: Under 125 words, informative but engaging
-            - Include relevant keywords for discoverability
+             Requirements:
+             - Title: Under 60 characters, clickable and SEO-friendly
+             - Description: Under 125 words, informative but engaging
+             - Include relevant keywords for discoverability
+             - DO NOT include any hashtags in the title or description
 
-            Format:
-            TITLE: [your title here]
-            DESCRIPTION: [your description here]
-            """
+             Format:
+             TITLE: [your title here]
+             DESCRIPTION: [your description here]
+             """
         }
 
         headers = {

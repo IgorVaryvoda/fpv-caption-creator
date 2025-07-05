@@ -224,7 +224,7 @@ class FPVCaptionGenerator:
         }
 
         data = {
-            "model": "google/gemini-2.0-flash-exp",
+            "model": "google/gemini-2.5-flash-lite-preview-06-17",
             "messages": [
                 {
                     "role": "user",

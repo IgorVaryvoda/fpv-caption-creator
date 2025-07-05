@@ -318,17 +318,11 @@ def main():
                     "YouTube Shorts": "📺"
                 }
 
-                # Generate caption first
+                # Create platform card
+                st.markdown(f'<div class="platform-header">{platform_icons.get(platform, "📱")} {platform}</div>', unsafe_allow_html=True)
+
+                # Generate caption
                 caption = generator.generate_caption(location, description, platform_key)
-
-                # Generate hashtags
-                hashtags = generator.generate_hashtags(location, description, platform_key) if caption else []
-
-                # Create complete platform card with all content
-                platform_html = f'''
-                <div class="platform-card">
-                    <div class="platform-header">{platform_icons.get(platform, "📱")} {platform}</div>
-                '''
 
                 if caption:
                     if platform == "YouTube Shorts" and "TITLE:" in caption and "DESCRIPTION:" in caption:
@@ -337,31 +331,24 @@ def main():
                         title = parts[0].replace("TITLE:", "").strip()
                         desc = parts[1].strip()
 
-                        platform_html += f'''
-                        <p><strong>📺 Title:</strong></p>
-                        <div class="caption-box">{title}</div>
-                        <p><strong>📝 Description:</strong></p>
-                        <div class="caption-box">{desc}</div>
-                        '''
+                        st.markdown("**📺 Title:**")
+                        st.code(title, language="text")
+
+                        st.markdown("**📝 Description:**")
+                        st.code(desc, language="text")
                     else:
-                        platform_html += f'''
-                        <p><strong>📝 Caption:</strong></p>
-                        <div class="caption-box">{caption}</div>
-                        '''
+                        st.markdown("**📝 Caption:**")
+                        st.code(caption, language="text")
+
+                    # Generate hashtags
+                    hashtags = generator.generate_hashtags(location, description, platform_key)
 
                     if hashtags:
+                        st.markdown("**#️⃣ Suggested Hashtags:**")
                         hashtag_text = " ".join(hashtags)
-                        platform_html += f'''
-                        <div class="hashtag-section">
-                            <p><strong>#️⃣ Suggested Hashtags:</strong></p>
-                            <div class="hashtag-box">{hashtag_text}</div>
-                        </div>
-                        '''
+                        st.code(hashtag_text, language="text")
 
-                platform_html += '</div>'
-
-                # Render the complete platform card
-                st.markdown(platform_html, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
                 st.markdown("---")
 
     # Instructions and tips

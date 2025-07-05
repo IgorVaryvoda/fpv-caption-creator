@@ -121,13 +121,16 @@ class FPVCaptionGenerator:
             Flight description: {description}
 
             Requirements:
+            - Write in a direct, conversational tone
+            - Use short, punchy sentences
+            - Be data-driven but casual (like "Let's be honest" or "The results speak for themselves")
+            - Include relevant emojis naturally
+            - Focus on the raw experience and visuals
+            - End with an engaging question or call to action
             - Keep it under 150 words
-            - Make it exciting and visually descriptive
-            - Include relevant emojis
-            - Focus on the experience and visuals
-            - End with a call to action
             - DO NOT include any hashtags in the caption text
 
+            Style: Write like you're talking to a friend who's into FPV. Be authentic, direct, and exciting.
             Format: Just return the caption text, no hashtags, no extra formatting.
             """,
 
@@ -137,12 +140,16 @@ class FPVCaptionGenerator:
             Flight description: {description}
 
             Requirements:
-            - Keep it short and punchy (under 100 words)
-            - Use trending language and emojis
-            - Make it shareable and engaging
-            - Include a hook at the beginning
+            - Write in a direct, punchy style
+            - Use short sentences that hit hard
+            - Start with a hook that grabs attention immediately
+            - Be conversational and authentic (like "Not gonna lie" or "This hit different")
+            - Include trending language naturally
+            - Make it shareable and relatable
+            - Keep it under 100 words
             - DO NOT include any hashtags in the caption text
 
+            Style: Write like you're hyped about this flight and want to share that energy. Be real, be direct.
             Format: Just return the caption text, no hashtags, no extra formatting.
             """,
 
@@ -152,11 +159,15 @@ class FPVCaptionGenerator:
             Flight description: {description}
 
             Requirements:
-            - Title: Under 60 characters, clickable and SEO-friendly
-            - Description: Under 125 words, informative but engaging
+            - Title: Under 60 characters, clickable and direct (like "This FPV run hits different")
+            - Description: Conversational, short sentences, authentic tone
+            - Use casual expressions naturally
             - Include relevant keywords for discoverability
+            - Keep description under 125 words
+            - Be data-driven but personal
             - DO NOT include any hashtags in the title or description
 
+            Style: Write like you're genuinely excited about this footage and want viewers to feel that energy.
             Format:
             TITLE: [your title here]
             DESCRIPTION: [your description here]

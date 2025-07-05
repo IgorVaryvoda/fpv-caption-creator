@@ -224,7 +224,7 @@ class FPVCaptionGenerator:
         }
 
         data = {
-            "model": "google/gemini-2.5-flash-lite-preview-06-17",
+            "model": "google/gemini-2.0-flash-exp",
             "messages": [
                 {
                     "role": "user",
@@ -311,8 +311,6 @@ def main():
             for platform in platforms:
                 platform_key = platform.lower().replace(" ", "_")
 
-                st.markdown(f'<div class="platform-card">', unsafe_allow_html=True)
-
                 # Platform-specific icons
                 platform_icons = {
                     "Instagram": "📸",
@@ -320,6 +318,8 @@ def main():
                     "YouTube Shorts": "📺"
                 }
 
+                # Start platform card
+                st.markdown('<div class="platform-card">', unsafe_allow_html=True)
                 st.markdown(f'<div class="platform-header">{platform_icons.get(platform, "📱")} {platform}</div>', unsafe_allow_html=True)
 
                 # Generate caption
@@ -351,6 +351,7 @@ def main():
                         st.markdown(f'<div class="hashtag-box">{hashtag_text}</div>', unsafe_allow_html=True)
                         st.markdown('</div>', unsafe_allow_html=True)
 
+                # Close platform card
                 st.markdown('</div>', unsafe_allow_html=True)
                 st.markdown("---")
 

@@ -107,60 +107,60 @@ class FPVCaptionGenerator:
         self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
         self.base_url = "https://openrouter.ai/api/v1/chat/completions"
 
-    def generate_caption(self, location, description, platform):
-        """Generate caption using Gemini via OpenRouter"""
+    def generate_caption(self, location, description, platform, model):
+        """Generate caption using selected model via OpenRouter"""
         if not self.openrouter_api_key:
             st.error("⚠️ OpenRouter API key not found. Please set OPENROUTER_API_KEY in your environment variables.")
             return None
 
         # Platform-specific prompts
         prompts = {
-                         "instagram": f"""
-             Create an engaging Instagram caption for an FPV drone video with these details:
-             Location: {location}
-             Flight description: {description}
+            "instagram": f"""
+            Create an engaging Instagram caption for an FPV drone video with these details:
+            Location: {location}
+            Flight description: {description}
 
-             Requirements:
-             - Keep it under 150 words
-             - Make it exciting and visually descriptive
-             - Include relevant emojis
-             - Focus on the experience and visuals
-             - End with a call to action
-             - DO NOT include any hashtags in the caption text
+            Requirements:
+            - Keep it under 150 words
+            - Make it exciting and visually descriptive
+            - Include relevant emojis
+            - Focus on the experience and visuals
+            - End with a call to action
+            - DO NOT include any hashtags in the caption text
 
-             Format: Just return the caption text, no hashtags, no extra formatting.
-             """,
+            Format: Just return the caption text, no hashtags, no extra formatting.
+            """,
 
-                         "tiktok": f"""
-             Create a catchy TikTok caption for an FPV drone video with these details:
-             Location: {location}
-             Flight description: {description}
+            "tiktok": f"""
+            Create a catchy TikTok caption for an FPV drone video with these details:
+            Location: {location}
+            Flight description: {description}
 
-             Requirements:
-             - Keep it short and punchy (under 100 words)
-             - Use trending language and emojis
-             - Make it shareable and engaging
-             - Include a hook at the beginning
-             - DO NOT include any hashtags in the caption text
+            Requirements:
+            - Keep it short and punchy (under 100 words)
+            - Use trending language and emojis
+            - Make it shareable and engaging
+            - Include a hook at the beginning
+            - DO NOT include any hashtags in the caption text
 
-             Format: Just return the caption text, no hashtags, no extra formatting.
-             """,
+            Format: Just return the caption text, no hashtags, no extra formatting.
+            """,
 
-                         "youtube_shorts": f"""
-             Create both a title and description for a YouTube Shorts FPV drone video:
-             Location: {location}
-             Flight description: {description}
+            "youtube_shorts": f"""
+            Create both a title and description for a YouTube Shorts FPV drone video:
+            Location: {location}
+            Flight description: {description}
 
-             Requirements:
-             - Title: Under 60 characters, clickable and SEO-friendly
-             - Description: Under 125 words, informative but engaging
-             - Include relevant keywords for discoverability
-             - DO NOT include any hashtags in the title or description
+            Requirements:
+            - Title: Under 60 characters, clickable and SEO-friendly
+            - Description: Under 125 words, informative but engaging
+            - Include relevant keywords for discoverability
+            - DO NOT include any hashtags in the title or description
 
-             Format:
-             TITLE: [your title here]
-             DESCRIPTION: [your description here]
-             """
+            Format:
+            TITLE: [your title here]
+            DESCRIPTION: [your description here]
+            """
         }
 
         headers = {
@@ -171,7 +171,7 @@ class FPVCaptionGenerator:
         }
 
         data = {
-            "model": "google/gemini-2.5-flash-lite-preview-06-17",
+            "model": model,
             "messages": [
                 {
                     "role": "user",
@@ -196,7 +196,7 @@ class FPVCaptionGenerator:
             st.error(f"❌ Error parsing response: {str(e)}")
             return None
 
-    def generate_hashtags(self, location, description, platform):
+    def generate_hashtags(self, location, description, platform, model):
         """Generate relevant hashtags"""
         if not self.openrouter_api_key:
             return []
@@ -224,7 +224,7 @@ class FPVCaptionGenerator:
         }
 
         data = {
-            "model": "google/gemini-2.5-flash-lite-preview-06-17",
+            "model": model,
             "messages": [
                 {
                     "role": "user",
@@ -284,6 +284,25 @@ def main():
             height=120
         )
 
+        st.header("🤖 AI Model Selection")
+        model_options = [
+            "google/gemini-2.5-flash-lite-preview-06-17",
+            "google/gemini-2.5-flash",
+            "google/gemini-2.0-flash-001",
+            "deepseek/deepseek-r1-0528",
+            "openai/o4-mini",
+            "anthropic/claude-sonnet-4",
+            "openrouter/cypher-alpha:free",
+            "deepseek/deepseek-chat-v3-0324:free"
+        ]
+
+        selected_model = st.selectbox(
+            "Choose AI model:",
+            options=model_options,
+            index=0,  # Default to gemini-2.5-flash-lite-preview-06-17
+            help="Select which AI model to use for generating captions and hashtags"
+        )
+
         st.header("🎯 Platform Selection")
         platforms = st.multiselect(
             "Choose platforms:",
@@ -322,7 +341,7 @@ def main():
                 st.markdown(f'<div class="platform-header">{platform_icons.get(platform, "📱")} {platform}</div>', unsafe_allow_html=True)
 
                 # Generate caption
-                caption = generator.generate_caption(location, description, platform_key)
+                caption = generator.generate_caption(location, description, platform_key, selected_model)
 
                 if caption:
                     if platform == "YouTube Shorts" and "TITLE:" in caption and "DESCRIPTION:" in caption:
@@ -341,7 +360,7 @@ def main():
                         st.code(caption, language="text")
 
                     # Generate hashtags
-                    hashtags = generator.generate_hashtags(location, description, platform_key)
+                    hashtags = generator.generate_hashtags(location, description, platform_key, selected_model)
 
                     if hashtags:
                         st.markdown("**#️⃣ Suggested Hashtags:**")
